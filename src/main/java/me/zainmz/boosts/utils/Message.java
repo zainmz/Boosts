@@ -60,6 +60,11 @@ public class Message {
                         .translateAlternateColorCodes('&',string));
                 break;
 
+            case "target":
+                target.sendMessage(ChatColor
+                        .translateAlternateColorCodes('&',string));
+                break;
+
             case "globalstart":
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&',string
                         .replace("%type%",type)
@@ -71,6 +76,11 @@ public class Message {
         }
 
 
+    }
+
+    public void gBoostEnd(){
+        Bukkit.broadcastMessage(ChatColor
+                .translateAlternateColorCodes('&',"&a&lBOOSTS &7Global boost has ended!"));
     }
 
 

@@ -4,11 +4,13 @@ import de.leonhard.storage.LightningBuilder;
 import de.leonhard.storage.Yaml;
 import me.mattstudios.mf.base.CommandManager;
 import me.zainmz.boosts.commands.Boost;
+import me.zainmz.boosts.commands.Cancel;
 import me.zainmz.boosts.commands.GBoost;
 import me.zainmz.boosts.listeners.*;
 import me.zainmz.boosts.tasks.CacheTask;
-import me.zainmz.boosts.tasks.GlobalBoostTask;
 import me.zainmz.boosts.tasks.SaveCache;
+import me.zainmz.boosts.utils.Message;
+import me.zainmz.boosts.utils.Placeholders;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -18,13 +20,14 @@ public final class Boosts extends JavaPlugin {
 
     private CommandManager commandManager;
     private final HashMap<UUID, String> cache = new HashMap<UUID, String>();
-    private String gBoost = null;
+    private final HashMap<Integer, String> gBoost = new HashMap<Integer, String>();
     private final List<UUID> gBoostPlayers = new ArrayList<UUID>();
 
     private final ArrayList<String> types = new ArrayList<String>(Arrays.asList("jobspay","jobsxp", "xp", "skills"));
     private BukkitTask bukkitTask;
-    private BukkitTask globalTask;
     private SaveCache saveCache;
+    private Message message;
+    private Boolean placeholders;
 
     public static Yaml configuration;
     public static Yaml messages;
@@ -62,6 +65,7 @@ public final class Boosts extends JavaPlugin {
         //Register commands
         commandManager.register(new Boost(this));
         commandManager.register(new GBoost(this));
+        commandManager.register(new Cancel(this));
 
         //register events
         getServer().getPluginManager().registerEvents(new JobsPayEvent(this),this);
@@ -71,10 +75,11 @@ public final class Boosts extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerLeave(this),this);
         getServer().getPluginManager().registerEvents(new PlayerJoin(this),this);
 
+        //register PAPI placeholders
+        this.placeholders = new Placeholders(this).register();
+
         //Run Task
-        System.out.println("[Boosts] Beginning task");
-        bukkitTask = new CacheTask(this).runTaskTimerAsynchronously(this,400L,20L);
-        globalTask = new GlobalBoostTask(this).runTaskTimerAsynchronously(this,400L,20L);
+        startCacheTask();
 
         //initialize save task
         this.saveCache = new SaveCache(this);
@@ -89,6 +94,11 @@ public final class Boosts extends JavaPlugin {
         saveCache.save();
     }
 
+    public void startCacheTask(){
+        System.out.println("[Boosts] Beginning personal boost task");
+        bukkitTask = new CacheTask(this).runTaskTimerAsynchronously(this,400L,20L);
+    }
+
     public HashMap<UUID, String> getPlayers(){
         return cache;
     }
@@ -98,8 +108,11 @@ public final class Boosts extends JavaPlugin {
         return gBoostPlayers;
     }
 
-    //get global boost type and data
-    public String getgBoost() {
+    public HashMap<Integer, String> getgBoost() {
         return gBoost;
+    }
+
+    public Message getMessage() {
+        return message;
     }
 }

@@ -14,10 +14,12 @@ public class CacheTask extends BukkitRunnable {
     private final Boosts boosts;
     private final HashMap<UUID, String> cache;
     private static final Yaml messsages = Boosts.messages;
+    public HashMap<Integer, String> gBoost;
 
     public CacheTask(Boosts boosts) {
         this.boosts = boosts;
         this.cache = boosts.getPlayers();
+        this.gBoost = boosts.getgBoost();
     }
 
     @Override
@@ -46,7 +48,7 @@ public class CacheTask extends BukkitRunnable {
 
             //update time value of user
             String newTime = String.valueOf(time);
-            value.setValue(data[0] + ":" +data[1] + ":" + newTime);
+            value.setValue(data[0] + ":" + data[1] + ":" + newTime);
         }
     }
 }

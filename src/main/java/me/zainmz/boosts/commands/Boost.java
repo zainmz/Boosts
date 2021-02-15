@@ -18,6 +18,7 @@ public class Boost extends CommandBase {
 
     private final Boosts boosts;
     private final HashMap<UUID, String> cache;
+    public HashMap<Integer, String> gBoost;
 
     private static final Yaml messages = Boosts.messages;
     private static final Yaml data = Boosts.data;
@@ -26,6 +27,7 @@ public class Boost extends CommandBase {
     public Boost(Boosts boosts) {
         this.boosts = boosts;
         this.cache = boosts.getPlayers();
+        this.gBoost = boosts.getgBoost();
     }
 
     @Default
@@ -75,9 +77,16 @@ public class Boost extends CommandBase {
     //check type and put on cache
     public void beginBoost(Player giver,Player target, String type, Double multi, Integer time, String sender){
 
+
         if(target == null){
             Message.send("general",messages
                     .getString("No Player"),giver,target,time,type,multi);
+            return;
+        }
+
+        if(time == null){
+            Message.send("general",messages
+                    .getString("No Time"),giver,target,time,type,multi);
             return;
         }
 
@@ -93,8 +102,21 @@ public class Boost extends CommandBase {
                 return;
         }
 
-        //saves in format type:multi:time
+
         if(sender.equals("player")){
+            //check if global boost of the type entered is active
+            if(!gBoost.isEmpty()){
+                String[] data = gBoost.get(1).split(":");
+                if(data[0].equalsIgnoreCase(type)){
+                    Message.send("general",messages
+                            .getString("boost_gboost_same_type"),giver,target,time,type,multi);
+                    Message.send("target",messages
+                            .getString("boost_gboost_same_type_pl"),giver,target,time,type,multi);
+                    return;
+                }
+            }
+
+            //saves in format type:multi:time
             cache.put(target.getUniqueId(),type + ":" + multi + ":" + time);
             Message.send("given",messages
                     .getString("boost_given"),giver,target,time,type,multi);
@@ -104,6 +126,16 @@ public class Boost extends CommandBase {
         }
 
         if(sender.equals("console")){
+            if(!gBoost.isEmpty()){
+                String[] data = gBoost.get(1).split(":");
+                if(data[0].equalsIgnoreCase(type)){
+                    System.out.println("[Boosts] Unable to give boost since a global boost of this type is active!");
+                    Message.send("target",messages
+                            .getString("boost_gboost_same_type_pl"),giver,target,time,type,multi);
+                    return;
+                }
+            }
+            //saves in format type:multi:time
             cache.put(target.getUniqueId(),type + ":" + multi + ":" + time);
             System.out.println("[Boosts] Given "+ target.getName() + " " + type
                     + " boost for " + time +" seconds");
