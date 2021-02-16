@@ -49,7 +49,6 @@ public class GlobalBoostTask extends BukkitRunnable {
     if(time <= 0){
         this.message = new Message();
         message.gBoostEnd();
-        System.out.println("[Boosts] Global boost has finished!");
         gBoost.remove(1);
         gBoostPlayers.clear();
         this.cancel();

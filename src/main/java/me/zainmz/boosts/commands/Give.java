@@ -39,16 +39,30 @@ public class Give extends CommandBase {
         Player player = (Player) sender;
 
         if(target == null){
-            Message.send("general",messages
-                    .getString("No Player"),null,target,null,null,null);
+            if(sender instanceof Player){
+                Message.send("general",messages
+                        .getString("No Player"),player, null,null,null,null);
+                return;
+            }
+            System.out.println("[Boosts] Player was not found!");
             return;
         }
 
         if(item == null){
-            Message.send("general",messages
-                    .getString("No item"),null,target,null,null,null);
+            if(sender instanceof Player){
+                Message.send("general",messages
+                        .getString("No item"),player,target,null,null,null);
+                return;
+            }
+            System.out.println("[Boosts] Item was not found!");
             return;
         }
+
+        if(sender instanceof Player){
+            Message.send("general",messages
+                    .getString("given_item"),player,null,null,null,null);
+        }
+        System.out.println("[Boosts] Given item to that player!");
 
         final Map<Integer, ItemStack> map = target.getInventory().addItem(items.get(item));
         if (!map.isEmpty()) {

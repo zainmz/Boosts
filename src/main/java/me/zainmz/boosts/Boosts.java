@@ -126,7 +126,7 @@ public final class Boosts extends JavaPlugin {
             gBoost.put(1,data.getString(String.valueOf(1)));
             data.remove(String.valueOf(1));
             globalTask = new GlobalBoostTask(this)
-                    .runTaskTimerAsynchronously(this,0L,20L);
+                    .runTaskTimerAsynchronously(this,400L,20L);
             System.out.println("[Boosts] Found a global boost, running global task!");
         }
     }

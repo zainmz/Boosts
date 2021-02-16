@@ -1,3 +1,17 @@
+# Item configuration
+#
+#Items:                            - DO NOT REMOVE THIS, LEAVE AS IT IS
+#  1:                              - item id, use only numbers (integers)
+#    type: jobspay                 - available types [jobspay, jobsxp, skills, xp] CASE SENSITIVE
+#    multiplier: 0.2               - suitable multiplier value
+#    time: 300                     - time in seconds
+#    item_name: "&4Jobs Pay Boost" - Name for the boost item, supports color codes
+#    item_type: SLIME_BALL         - Valid minecraft item name
+#    lore:                         - Items lore , any number of lines , color codes supported
+#      - "&7Multiplier: 0.2"
+#      - "&7Time: 5 minutes"
+#
+
 Items:
   1:
     type: jobspay
