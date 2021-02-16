@@ -14,7 +14,7 @@ public class GlobalBoostTask extends BukkitRunnable {
     private final Boosts boosts;
     private final List<UUID> gBoostPlayers;
     public HashMap<Integer, String> gBoost;
-    private final Message message;
+    private Message message;
 
     public GlobalBoostTask(Boosts boosts) {
         this.boosts = boosts;
@@ -47,6 +47,8 @@ public class GlobalBoostTask extends BukkitRunnable {
 
     //check if time is over and end global boost
     if(time <= 0){
+        this.message = new Message();
+        message.gBoostEnd();
         System.out.println("[Boosts] Global boost has finished!");
         gBoost.remove(1);
         gBoostPlayers.clear();

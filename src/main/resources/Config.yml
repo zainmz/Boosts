@@ -1,0 +1,20 @@
+Items:
+  1:
+    type: jobspay
+    multiplier: 0.2
+    time: 300
+    item_name: "&4Jobs Pay Boost"
+    item_type: SLIME_BALL
+    lore:
+      - "&7Multiplier: 0.2"
+      - "&7Time: 5 minutes"
+  2:
+    type: jobsxp
+    multiplier: 0.2
+    time: 300
+    item_name: "&4Jobs XP Boost"
+    item_type: SLIME_BALL
+    lore:
+      - "&7Multiplier: 0.2"
+      - "&7Time: 5 minutes"
+
